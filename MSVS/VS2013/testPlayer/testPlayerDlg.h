@@ -5,6 +5,7 @@
 #pragma once
 
 #include <libSimplePlayer.h>
+#include "CStringToChar.h"
 
 // CtestPlayerDlg dialog
 class CtestPlayerDlg : public CDialogEx
@@ -54,4 +55,10 @@ public:
     afx_msg void OnClickedButtonHandle2GetPercentage();
     afx_msg void OnClickedButtonHandle2SetPercentage();
     afx_msg void OnClickedButtonHandle2TakeSnapshot();
+    CString m_handle1_filepath;
+    CString m_handle2_filepath;
+    CString m_handle1_snapshot_path;
+    CString m_handle2_snapshot_path;
+    afx_msg void OnClickedButtonHandle1Apply();
+    afx_msg void OnClickedButtonHandle2Apply();
 };

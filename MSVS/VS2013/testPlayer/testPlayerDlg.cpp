@@ -21,7 +21,11 @@ CtestPlayerDlg::CtestPlayerDlg(CWnd* pParent /*=NULL*/)
     m_handle1_speed(0),
     m_handle1_percentage(0),
     m_handle2_percentage(0),
-    m_handle2_speed(0)
+    m_handle2_speed(0),
+    m_handle1_filepath(_T("")),
+    m_handle2_filepath(_T("")),
+    m_handle1_snapshot_path(_T("")),
+    m_handle2_snapshot_path(_T(""))
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -33,6 +37,10 @@ void CtestPlayerDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_HANDLE1_PERCENTAGE, m_handle1_percentage);
     DDX_Text(pDX, IDC_EDIT_HANDLE2_PERCENTAGE, m_handle2_percentage);
     DDX_Text(pDX, IDC_EDIT_HANDLE2_SPEED, m_handle2_speed);
+    DDX_Text(pDX, IDC_EDIT_HANDLE1_FILEPATH, m_handle1_filepath);
+    DDX_Text(pDX, IDC_EDIT_HANDLE2_FILEPATH, m_handle2_filepath);
+    DDX_Text(pDX, IDC_EDIT_HANDLE1_SNAPSHOT_PATH, m_handle1_snapshot_path);
+    DDX_Text(pDX, IDC_EDIT_HANDLE2_SNAPSHOT_PATH, m_handle2_snapshot_path);
 }
 
 BEGIN_MESSAGE_MAP(CtestPlayerDlg, CDialogEx)
@@ -52,6 +60,8 @@ BEGIN_MESSAGE_MAP(CtestPlayerDlg, CDialogEx)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE2_GET_PERCENTAGE, &CtestPlayerDlg::OnClickedButtonHandle2GetPercentage)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE2_SET_PERCENTAGE, &CtestPlayerDlg::OnClickedButtonHandle2SetPercentage)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE2_TAKE_SNAPSHOT, &CtestPlayerDlg::OnClickedButtonHandle2TakeSnapshot)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE1_APPLY, &CtestPlayerDlg::OnClickedButtonHandle1Apply)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE2_APPLY, &CtestPlayerDlg::OnClickedButtonHandle2Apply)
 END_MESSAGE_MAP()
 
 
@@ -69,14 +79,12 @@ BOOL CtestPlayerDlg::OnInitDialog()
     // TODO: Add extra initialization here
     m_handle1_speed = 1.0;
     m_handle2_speed = 1.0;
+    m_handle1_filepath = _T("E:\\C#FundamentalsForAbsoluteBeginnersM01_high.mp4");
+    m_handle2_filepath = _T("E:\\Avengers.Age.of.Ultron.2015.1080p.BluRay.x264.YIFY.mp4");
+    m_handle1_snapshot_path = _T("D:\\");
+    m_handle2_snapshot_path = _T("D:\\");
     UpdateData(FALSE);
     LSP_initial();
-    LSP_get_idle_handle(&m_play_handle1);
-    LSP_get_idle_handle(&m_play_handle2);
-    LSP_set_filepath(m_play_handle1, "E:\\C#FundamentalsForAbsoluteBeginnersM01_high.mp4");
-    LSP_set_filepath(m_play_handle2, "E:\\Avengers.Age.of.Ultron.2015.1080p.BluRay.x264.YIFY.mp4");
-    LSP_set_hwnd(m_play_handle1, GetDlgItem(IDC_HANDLE1_PICTURE_AREA)->m_hWnd);
-    LSP_set_hwnd(m_play_handle2, GetDlgItem(IDC_HANDLE2_PICTURE_AREA)->m_hWnd);
 
     return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -175,7 +183,8 @@ void CtestPlayerDlg::OnClickedButtonHandle1SetPercentage()
 void CtestPlayerDlg::OnClickedButtonHandle1TakeSnapshot()
 {
     // TODO: Add your control notification handler code here
-    LSP_get_snapshot(m_play_handle1, "D:\\");
+    UpdateData();
+    LSP_get_snapshot(m_play_handle1, CCStringToChar(m_handle1_snapshot_path).GetCStyleString());
 }
 
 
@@ -227,5 +236,26 @@ void CtestPlayerDlg::OnClickedButtonHandle2SetPercentage()
 void CtestPlayerDlg::OnClickedButtonHandle2TakeSnapshot()
 {
     // TODO: Add your control notification handler code here
-    LSP_get_snapshot(m_play_handle2, "D:\\");
+    UpdateData();
+    LSP_get_snapshot(m_play_handle2, CCStringToChar(m_handle2_snapshot_path).GetCStyleString());
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle1Apply()
+{
+    // TODO: Add your control notification handler code here
+    UpdateData();
+    LSP_get_idle_handle(&m_play_handle1);
+    LSP_set_filepath(m_play_handle1, CCStringToChar(m_handle1_filepath).GetCStyleString());
+    LSP_set_hwnd(m_play_handle1, GetDlgItem(IDC_HANDLE1_PICTURE_AREA)->m_hWnd);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle2Apply()
+{
+    // TODO: Add your control notification handler code here
+    UpdateData();
+    LSP_get_idle_handle(&m_play_handle2);
+    LSP_set_filepath(m_play_handle2, CCStringToChar(m_handle2_filepath).GetCStyleString());
+    LSP_set_hwnd(m_play_handle2, GetDlgItem(IDC_HANDLE2_PICTURE_AREA)->m_hWnd);
 }
