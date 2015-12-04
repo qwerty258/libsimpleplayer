@@ -17,7 +17,8 @@
 
 
 CtestPlayerDlg::CtestPlayerDlg(CWnd* pParent /*=NULL*/)
-    :CDialogEx(CtestPlayerDlg::IDD, pParent)
+    :CDialogEx(CtestPlayerDlg::IDD, pParent),
+    m_handle1_speed(0)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -25,14 +26,16 @@ CtestPlayerDlg::CtestPlayerDlg(CWnd* pParent /*=NULL*/)
 void CtestPlayerDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialogEx::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT_SPEED, m_handle1_speed);
 }
 
 BEGIN_MESSAGE_MAP(CtestPlayerDlg, CDialogEx)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
-ON_BN_CLICKED(IDC_BUTTON_PLAY, &CtestPlayerDlg::OnClickedButtonPlay)
-ON_BN_CLICKED(IDC_BUTTON_PAUSE, &CtestPlayerDlg::OnClickedButtonPause)
-ON_BN_CLICKED(IDC_BUTTON_STOP, &CtestPlayerDlg::OnClickedButtonStop)
+    ON_BN_CLICKED(IDC_BUTTON_PLAY, &CtestPlayerDlg::OnClickedButtonPlay)
+    ON_BN_CLICKED(IDC_BUTTON_PAUSE, &CtestPlayerDlg::OnClickedButtonPause)
+    ON_BN_CLICKED(IDC_BUTTON_STOP, &CtestPlayerDlg::OnClickedButtonStop)
+ON_BN_CLICKED(IDC_BUTTON_SET_SPEED, &CtestPlayerDlg::OnClickedButtonSetSpeed)
 END_MESSAGE_MAP()
 
 
@@ -48,6 +51,8 @@ BOOL CtestPlayerDlg::OnInitDialog()
     SetIcon(m_hIcon, FALSE);        // Set small icon
 
     // TODO: Add extra initialization here
+    m_handle1_speed = 1.0;
+    UpdateData(FALSE);
     LSP_initial();
     LSP_get_idle_handle(&m_play_handle1);
     LSP_set_filepath(m_play_handle1, "E:\\C#FundamentalsForAbsoluteBeginnersM01_high.mp4");
@@ -120,4 +125,12 @@ void CtestPlayerDlg::OnClickedButtonStop()
 {
     // TODO: Add your control notification handler code here
     LSP_stop(m_play_handle1);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonSetSpeed()
+{
+    // TODO: Add your control notification handler code here
+    UpdateData();
+    LSP_set_speed(m_play_handle1, m_handle1_speed);
 }
