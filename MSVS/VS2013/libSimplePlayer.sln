@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSimplePlayer", "libSimplePlayer\libSimplePlayer.vcxproj", "{E8853605-F92B-4A72-A769-9E012F9A2EDF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testPlayer", "testPlayer\testPlayer.vcxproj", "{FD7D12EE-F849-420C-BC05-6EE3E2395532}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E8853605-F92B-4A72-A769-9E012F9A2EDF} = {E8853605-F92B-4A72-A769-9E012F9A2EDF}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
