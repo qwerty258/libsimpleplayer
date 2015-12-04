@@ -202,6 +202,13 @@ LIBSIMPLEPLAYER_API int LSP_close_handle(uint32_t handle)
 
 LIBSIMPLEPLAYER_API int LSP_uninitial(void)
 {
+    for(uint32_t i = 0; i < global_instance_context_array_size; i++)
+    {
+        if(NULL != global_instance_context_array[i])
+        {
+            LSP_close_handle(i);
+        }
+    }
     free(global_instance_context_array);
     global_instance_context_array_size = 0;
     return LIB_SIMPLE_PLAYER_OK;
