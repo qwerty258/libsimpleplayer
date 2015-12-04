@@ -19,7 +19,9 @@
 CtestPlayerDlg::CtestPlayerDlg(CWnd* pParent /*=NULL*/)
     :CDialogEx(CtestPlayerDlg::IDD, pParent),
     m_handle1_speed(0),
-    m_handle1_percentage(0)
+    m_handle1_percentage(0),
+    m_handle2_percentage(0),
+    m_handle2_speed(0)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -29,6 +31,8 @@ void CtestPlayerDlg::DoDataExchange(CDataExchange* pDX)
     CDialogEx::DoDataExchange(pDX);
     DDX_Text(pDX, IDC_EDIT_HANDLE1_SPEED, m_handle1_speed);
     DDX_Text(pDX, IDC_EDIT_HANDLE1_PERCENTAGE, m_handle1_percentage);
+    DDX_Text(pDX, IDC_EDIT_HANDLE2_PERCENTAGE, m_handle2_percentage);
+    DDX_Text(pDX, IDC_EDIT_HANDLE2_SPEED, m_handle2_speed);
 }
 
 BEGIN_MESSAGE_MAP(CtestPlayerDlg, CDialogEx)
@@ -40,6 +44,14 @@ BEGIN_MESSAGE_MAP(CtestPlayerDlg, CDialogEx)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE1_SET_SPEED, &CtestPlayerDlg::OnClickedButtonHandle1SetSpeed)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE1_GET_PERCENTAGE, &CtestPlayerDlg::OnClickedButtonHandle1GetPercentage)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE1_SET_PERCENTAGE, &CtestPlayerDlg::OnClickedButtonHandle1SetPercentage)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE1_TAKE_SNAPSHOT, &CtestPlayerDlg::OnClickedButtonHandle1TakeSnapshot)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE2_PLAY, &CtestPlayerDlg::OnClickedButtonHandle2Play)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE2_PAUSE, &CtestPlayerDlg::OnClickedButtonHandle2Pause)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE2_STOP, &CtestPlayerDlg::OnClickedButtonHandle2Stop)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE2_SET_SPEED, &CtestPlayerDlg::OnClickedButtonHandle2SetSpeed)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE2_GET_PERCENTAGE, &CtestPlayerDlg::OnClickedButtonHandle2GetPercentage)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE2_SET_PERCENTAGE, &CtestPlayerDlg::OnClickedButtonHandle2SetPercentage)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE2_TAKE_SNAPSHOT, &CtestPlayerDlg::OnClickedButtonHandle2TakeSnapshot)
 END_MESSAGE_MAP()
 
 
@@ -56,11 +68,15 @@ BOOL CtestPlayerDlg::OnInitDialog()
 
     // TODO: Add extra initialization here
     m_handle1_speed = 1.0;
+    m_handle2_speed = 1.0;
     UpdateData(FALSE);
     LSP_initial();
     LSP_get_idle_handle(&m_play_handle1);
+    LSP_get_idle_handle(&m_play_handle2);
     LSP_set_filepath(m_play_handle1, "E:\\C#FundamentalsForAbsoluteBeginnersM01_high.mp4");
-    LSP_set_hwnd(m_play_handle1, GetDlgItem(IDC_PICTURE_AREA)->m_hWnd);
+    LSP_set_filepath(m_play_handle2, "E:\\Avengers.Age.of.Ultron.2015.1080p.BluRay.x264.YIFY.mp4");
+    LSP_set_hwnd(m_play_handle1, GetDlgItem(IDC_HANDLE1_PICTURE_AREA)->m_hWnd);
+    LSP_set_hwnd(m_play_handle2, GetDlgItem(IDC_HANDLE2_PICTURE_AREA)->m_hWnd);
 
     return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -153,4 +169,63 @@ void CtestPlayerDlg::OnClickedButtonHandle1SetPercentage()
     // TODO: Add your control notification handler code here
     UpdateData();
     LSP_set_playing_percentage(m_play_handle1, m_handle1_percentage);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle1TakeSnapshot()
+{
+    // TODO: Add your control notification handler code here
+    LSP_get_snapshot(m_play_handle1, "D:\\");
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle2Play()
+{
+    // TODO: Add your control notification handler code here
+    LSP_play(m_play_handle2);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle2Pause()
+{
+    // TODO: Add your control notification handler code here
+    LSP_pause(m_play_handle2);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle2Stop()
+{
+    // TODO: Add your control notification handler code here
+    LSP_stop(m_play_handle2);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle2SetSpeed()
+{
+    // TODO: Add your control notification handler code here
+    UpdateData();
+    LSP_set_speed(m_play_handle2, m_handle2_speed);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle2GetPercentage()
+{
+    // TODO: Add your control notification handler code here
+    LSP_get_playing_percentage(m_play_handle2, &m_handle2_percentage);
+    UpdateData(FALSE);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle2SetPercentage()
+{
+    // TODO: Add your control notification handler code here
+    UpdateData();
+    LSP_set_playing_percentage(m_play_handle2, m_handle2_percentage);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle2TakeSnapshot()
+{
+    // TODO: Add your control notification handler code here
+    LSP_get_snapshot(m_play_handle2, "D:\\");
 }

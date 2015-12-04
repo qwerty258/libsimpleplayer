@@ -35,12 +35,23 @@ protected:
 public:
     virtual BOOL DestroyWindow();
     uint32_t m_play_handle1;
-    float m_handle1_speed;
+    uint32_t m_play_handle2;
     float m_handle1_percentage;
+    float m_handle1_speed;
+    float m_handle2_percentage;
+    float m_handle2_speed;
     afx_msg void OnClickedButtonHandle1Play();
     afx_msg void OnClickedButtonHandle1Pause();
     afx_msg void OnClickedButtonHandle1Stop();
     afx_msg void OnClickedButtonHandle1SetSpeed();
     afx_msg void OnClickedButtonHandle1GetPercentage();
     afx_msg void OnClickedButtonHandle1SetPercentage();
+    afx_msg void OnClickedButtonHandle1TakeSnapshot();
+    afx_msg void OnClickedButtonHandle2Play();
+    afx_msg void OnClickedButtonHandle2Pause();
+    afx_msg void OnClickedButtonHandle2Stop();
+    afx_msg void OnClickedButtonHandle2SetSpeed();
+    afx_msg void OnClickedButtonHandle2GetPercentage();
+    afx_msg void OnClickedButtonHandle2SetPercentage();
+    afx_msg void OnClickedButtonHandle2TakeSnapshot();
 };
