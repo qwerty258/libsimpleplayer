@@ -23,6 +23,8 @@ LIBSIMPLEPLAYER_API int LSP_pause(uint32_t handle);
 
 LIBSIMPLEPLAYER_API int LSP_stop(uint32_t handle);
 
+LIBSIMPLEPLAYER_API int LSP_set_speed(uint32_t handle, float speed);
+
 LIBSIMPLEPLAYER_API int LSP_close_handle(uint32_t handle);
 
 LIBSIMPLEPLAYER_API int LSP_uninitial(void);

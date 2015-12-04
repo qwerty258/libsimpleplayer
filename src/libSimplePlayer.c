@@ -129,6 +129,15 @@ LIBSIMPLEPLAYER_API int LSP_stop(uint32_t handle)
     return LIB_SIMPLE_PLAYER_OK;
 }
 
+LIBSIMPLEPLAYER_API int LSP_set_speed(uint32_t handle, float speed)
+{
+    CHECK_HANDLE(handle);
+
+    libvlc_media_player_set_rate(global_instance_context_array[handle]->p_libvlc_media_player_t, speed);
+
+    return LIB_SIMPLE_PLAYER_OK;
+}
+
 LIBSIMPLEPLAYER_API int LSP_close_handle(uint32_t handle)
 {
     CHECK_HANDLE(handle);
