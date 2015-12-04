@@ -19,6 +19,10 @@ LIBSIMPLEPLAYER_API int LSP_set_hwnd(uint32_t handle, void* hWnd);
 
 LIBSIMPLEPLAYER_API int LSP_play(uint32_t handle);
 
+LIBSIMPLEPLAYER_API int LSP_pause(uint32_t handle);
+
+LIBSIMPLEPLAYER_API int LSP_stop(uint32_t handle);
+
 LIBSIMPLEPLAYER_API int LSP_close_handle(uint32_t handle);
 
 LIBSIMPLEPLAYER_API int LSP_uninitial(void);

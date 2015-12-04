@@ -11,6 +11,7 @@ typedef enum
     initialized = 0,
     playing = 1,
     pause = 2,
+    stop = 3
 }instance_state;
 
 typedef struct _instance_context
@@ -103,6 +104,27 @@ LIBSIMPLEPLAYER_API int LSP_play(uint32_t handle)
     CHECK_HANDLE(handle);
 
     libvlc_media_player_play(global_instance_context_array[handle]->p_libvlc_media_player_t);
+    global_instance_context_array[handle]->state = playing;
+
+    return LIB_SIMPLE_PLAYER_OK;
+}
+
+LIBSIMPLEPLAYER_API int LSP_pause(uint32_t handle)
+{
+    CHECK_HANDLE(handle);
+
+    libvlc_media_player_pause(global_instance_context_array[handle]->p_libvlc_media_player_t);
+    global_instance_context_array[handle]->state = pause;
+
+    return LIB_SIMPLE_PLAYER_OK;
+}
+
+LIBSIMPLEPLAYER_API int LSP_stop(uint32_t handle)
+{
+    CHECK_HANDLE(handle);
+
+    libvlc_media_player_stop(global_instance_context_array[handle]->p_libvlc_media_player_t);
+    global_instance_context_array[handle]->state = stop;
 
     return LIB_SIMPLE_PLAYER_OK;
 }
