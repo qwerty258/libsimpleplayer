@@ -18,7 +18,8 @@
 
 CtestPlayerDlg::CtestPlayerDlg(CWnd* pParent /*=NULL*/)
     :CDialogEx(CtestPlayerDlg::IDD, pParent),
-    m_handle1_speed(0)
+    m_handle1_speed(0),
+    m_handle1_percentage(0)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -26,16 +27,19 @@ CtestPlayerDlg::CtestPlayerDlg(CWnd* pParent /*=NULL*/)
 void CtestPlayerDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialogEx::DoDataExchange(pDX);
-    DDX_Text(pDX, IDC_EDIT_SPEED, m_handle1_speed);
+    DDX_Text(pDX, IDC_EDIT_HANDLE1_SPEED, m_handle1_speed);
+    DDX_Text(pDX, IDC_EDIT_HANDLE1_PERCENTAGE, m_handle1_percentage);
 }
 
 BEGIN_MESSAGE_MAP(CtestPlayerDlg, CDialogEx)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
-    ON_BN_CLICKED(IDC_BUTTON_PLAY, &CtestPlayerDlg::OnClickedButtonPlay)
-    ON_BN_CLICKED(IDC_BUTTON_PAUSE, &CtestPlayerDlg::OnClickedButtonPause)
-    ON_BN_CLICKED(IDC_BUTTON_STOP, &CtestPlayerDlg::OnClickedButtonStop)
-ON_BN_CLICKED(IDC_BUTTON_SET_SPEED, &CtestPlayerDlg::OnClickedButtonSetSpeed)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE1_PLAY, &CtestPlayerDlg::OnClickedButtonHandle1Play)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE1_PAUSE, &CtestPlayerDlg::OnClickedButtonHandle1Pause)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE1_STOP, &CtestPlayerDlg::OnClickedButtonHandle1Stop)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE1_SET_SPEED, &CtestPlayerDlg::OnClickedButtonHandle1SetSpeed)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE1_GET_PERCENTAGE, &CtestPlayerDlg::OnClickedButtonHandle1GetPercentage)
+    ON_BN_CLICKED(IDC_BUTTON_HANDLE1_SET_PERCENTAGE, &CtestPlayerDlg::OnClickedButtonHandle1SetPercentage)
 END_MESSAGE_MAP()
 
 
@@ -107,30 +111,46 @@ BOOL CtestPlayerDlg::DestroyWindow()
 }
 
 
-void CtestPlayerDlg::OnClickedButtonPlay()
+void CtestPlayerDlg::OnClickedButtonHandle1Play()
 {
     // TODO: Add your control notification handler code here
     LSP_play(m_play_handle1);
 }
 
 
-void CtestPlayerDlg::OnClickedButtonPause()
+void CtestPlayerDlg::OnClickedButtonHandle1Pause()
 {
     // TODO: Add your control notification handler code here
     LSP_pause(m_play_handle1);
 }
 
 
-void CtestPlayerDlg::OnClickedButtonStop()
+void CtestPlayerDlg::OnClickedButtonHandle1Stop()
 {
     // TODO: Add your control notification handler code here
     LSP_stop(m_play_handle1);
 }
 
 
-void CtestPlayerDlg::OnClickedButtonSetSpeed()
+void CtestPlayerDlg::OnClickedButtonHandle1SetSpeed()
 {
     // TODO: Add your control notification handler code here
     UpdateData();
     LSP_set_speed(m_play_handle1, m_handle1_speed);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle1GetPercentage()
+{
+    // TODO: Add your control notification handler code here
+    LSP_get_playing_percentage(m_play_handle1, &m_handle1_percentage);
+    UpdateData(FALSE);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonHandle1SetPercentage()
+{
+    // TODO: Add your control notification handler code here
+    UpdateData();
+    LSP_set_playing_percentage(m_play_handle1, m_handle1_percentage);
 }
