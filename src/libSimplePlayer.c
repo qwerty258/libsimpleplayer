@@ -20,6 +20,8 @@ typedef struct _instance_context
     libvlc_instance_t* p_libvlc_instance_t;
     libvlc_media_t* p_libvlc_media_t;
     libvlc_media_player_t* p_libvlc_media_player_t;
+    int width;
+    int height;
 }instance_context;
 
 instance_context** global_instance_context_array;
@@ -82,6 +84,10 @@ LIBSIMPLEPLAYER_API int LSP_set_filepath(uint32_t handle, char* filepath)
         filepath);
     global_instance_context_array[handle]->p_libvlc_media_player_t = libvlc_media_player_new_from_media(
         global_instance_context_array[handle]->p_libvlc_media_t);
+    global_instance_context_array[handle]->width = libvlc_video_get_width(
+        global_instance_context_array[handle]->p_libvlc_media_player_t);
+    global_instance_context_array[handle]->height = libvlc_video_get_height(
+        global_instance_context_array[handle]->p_libvlc_media_player_t);
 
     return LIB_SIMPLE_PLAYER_OK;
 }
@@ -141,6 +147,7 @@ LIBSIMPLEPLAYER_API int LSP_set_speed(uint32_t handle, float speed)
 LIBSIMPLEPLAYER_API int LSP_get_playing_percentage(uint32_t handle, float* percentage)
 {
     CHECK_HANDLE(handle);
+    CHECK_PARAMETER(percentage);
 
     *percentage = libvlc_media_player_get_position(
         global_instance_context_array[handle]->p_libvlc_media_player_t);
@@ -163,6 +170,22 @@ LIBSIMPLEPLAYER_API int LSP_set_playing_percentage(uint32_t handle, float percen
 
     return LIB_SIMPLE_PLAYER_OK;
 }
+
+LIBSIMPLEPLAYER_API int LSP_get_snapshot(uint32_t handle, char* savepath)
+{
+    CHECK_HANDLE(handle);
+    CHECK_PARAMETER(savepath);
+
+    libvlc_video_take_snapshot(
+        global_instance_context_array[handle]->p_libvlc_media_player_t,
+        0,
+        savepath,
+        global_instance_context_array[handle]->width,
+        global_instance_context_array[handle]->height);
+
+    return LIB_SIMPLE_PLAYER_OK;
+}
+
 
 LIBSIMPLEPLAYER_API int LSP_close_handle(uint32_t handle)
 {

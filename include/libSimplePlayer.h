@@ -29,6 +29,8 @@ LIBSIMPLEPLAYER_API int LSP_get_playing_percentage(uint32_t handle, float* perce
 
 LIBSIMPLEPLAYER_API int LSP_set_playing_percentage(uint32_t handle, float percentage);
 
+LIBSIMPLEPLAYER_API int LSP_get_snapshot(uint32_t handle, char* savepath);
+
 LIBSIMPLEPLAYER_API int LSP_close_handle(uint32_t handle);
 
 LIBSIMPLEPLAYER_API int LSP_uninitial(void);
