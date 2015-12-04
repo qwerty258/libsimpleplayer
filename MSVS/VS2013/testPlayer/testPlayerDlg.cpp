@@ -31,6 +31,8 @@ BEGIN_MESSAGE_MAP(CtestPlayerDlg, CDialogEx)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
 ON_BN_CLICKED(IDC_BUTTON_PLAY, &CtestPlayerDlg::OnClickedButtonPlay)
+ON_BN_CLICKED(IDC_BUTTON_PAUSE, &CtestPlayerDlg::OnClickedButtonPause)
+ON_BN_CLICKED(IDC_BUTTON_STOP, &CtestPlayerDlg::OnClickedButtonStop)
 END_MESSAGE_MAP()
 
 
@@ -47,6 +49,10 @@ BOOL CtestPlayerDlg::OnInitDialog()
 
     // TODO: Add extra initialization here
     LSP_initial();
+    LSP_get_idle_handle(&m_play_handle1);
+    LSP_set_filepath(m_play_handle1, "E:\\C#FundamentalsForAbsoluteBeginnersM01_high.mp4");
+    LSP_set_hwnd(m_play_handle1, GetDlgItem(IDC_PICTURE_AREA)->m_hWnd);
+
     return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -99,8 +105,19 @@ BOOL CtestPlayerDlg::DestroyWindow()
 void CtestPlayerDlg::OnClickedButtonPlay()
 {
     // TODO: Add your control notification handler code here
-    LSP_get_idle_handle(&m_play_handle1);
-    LSP_set_filepath(m_play_handle1, "E:\\C#FundamentalsForAbsoluteBeginnersM01_high.mp4");
-    LSP_set_hwnd(m_play_handle1, GetDlgItem(IDC_PICTURE_AREA)->m_hWnd);
     LSP_play(m_play_handle1);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonPause()
+{
+    // TODO: Add your control notification handler code here
+    LSP_pause(m_play_handle1);
+}
+
+
+void CtestPlayerDlg::OnClickedButtonStop()
+{
+    // TODO: Add your control notification handler code here
+    LSP_stop(m_play_handle1);
 }

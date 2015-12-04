@@ -36,4 +36,6 @@ public:
     virtual BOOL DestroyWindow();
     uint32_t m_play_handle1;
     afx_msg void OnClickedButtonPlay();
+    afx_msg void OnClickedButtonPause();
+    afx_msg void OnClickedButtonStop();
 };
