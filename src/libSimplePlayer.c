@@ -196,6 +196,7 @@ LIBSIMPLEPLAYER_API int LSP_close_handle(uint32_t handle)
     libvlc_release(global_instance_context_array[handle]->p_libvlc_instance_t);
 
     free(global_instance_context_array[handle]);
+    global_instance_context_array[handle] = NULL;
     return LIB_SIMPLE_PLAYER_OK;
 }
 
