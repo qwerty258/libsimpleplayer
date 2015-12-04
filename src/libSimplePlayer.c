@@ -138,6 +138,32 @@ LIBSIMPLEPLAYER_API int LSP_set_speed(uint32_t handle, float speed)
     return LIB_SIMPLE_PLAYER_OK;
 }
 
+LIBSIMPLEPLAYER_API int LSP_get_playing_percentage(uint32_t handle, float* percentage)
+{
+    CHECK_HANDLE(handle);
+
+    *percentage = libvlc_media_player_get_position(
+        global_instance_context_array[handle]->p_libvlc_media_player_t);
+
+    return LIB_SIMPLE_PLAYER_OK;
+}
+
+LIBSIMPLEPLAYER_API int LSP_set_playing_percentage(uint32_t handle, float percentage)
+{
+    CHECK_HANDLE(handle);
+
+    if(percentage < 0.0 || 1.0 < percentage)
+    {
+        return LIB_SIMPLE_PLAYER_INVALID_PERCENTAGE;
+    }
+
+    libvlc_media_player_set_position(
+        global_instance_context_array[handle]->p_libvlc_media_player_t,
+        percentage);
+
+    return LIB_SIMPLE_PLAYER_OK;
+}
+
 LIBSIMPLEPLAYER_API int LSP_close_handle(uint32_t handle)
 {
     CHECK_HANDLE(handle);
