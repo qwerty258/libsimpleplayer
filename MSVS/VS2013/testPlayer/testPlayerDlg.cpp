@@ -62,6 +62,8 @@ BEGIN_MESSAGE_MAP(CtestPlayerDlg, CDialogEx)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE2_TAKE_SNAPSHOT, &CtestPlayerDlg::OnClickedButtonHandle2TakeSnapshot)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE1_APPLY, &CtestPlayerDlg::OnClickedButtonHandle1Apply)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE2_APPLY, &CtestPlayerDlg::OnClickedButtonHandle2Apply)
+ON_WM_RBUTTONDOWN()
+ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -258,4 +260,24 @@ void CtestPlayerDlg::OnClickedButtonHandle2Apply()
     LSP_get_idle_handle(&m_play_handle2);
     LSP_set_filepath(m_play_handle2, CCStringToChar(m_handle2_filepath).GetCStyleString());
     LSP_set_hwnd(m_play_handle2, GetDlgItem(IDC_HANDLE2_PICTURE_AREA)->m_hWnd);
+}
+
+
+void CtestPlayerDlg::OnRButtonDown(UINT nFlags, CPoint point)
+{
+    // TODO: Add your message handler code here and/or call default
+
+    AfxMessageBox(_T("Right button clicked"));
+
+    CDialogEx::OnRButtonDown(nFlags, point);
+}
+
+
+void CtestPlayerDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+    // TODO: Add your message handler code here and/or call default
+
+    AfxMessageBox(_T("Left button clicked"));
+
+    CDialogEx::OnLButtonDown(nFlags, point);
 }

@@ -41,6 +41,10 @@ public:
     float m_handle1_speed;
     float m_handle2_percentage;
     float m_handle2_speed;
+    CString m_handle1_filepath;
+    CString m_handle2_filepath;
+    CString m_handle1_snapshot_path;
+    CString m_handle2_snapshot_path;
     afx_msg void OnClickedButtonHandle1Play();
     afx_msg void OnClickedButtonHandle1Pause();
     afx_msg void OnClickedButtonHandle1Stop();
@@ -55,10 +59,8 @@ public:
     afx_msg void OnClickedButtonHandle2GetPercentage();
     afx_msg void OnClickedButtonHandle2SetPercentage();
     afx_msg void OnClickedButtonHandle2TakeSnapshot();
-    CString m_handle1_filepath;
-    CString m_handle2_filepath;
-    CString m_handle1_snapshot_path;
-    CString m_handle2_snapshot_path;
     afx_msg void OnClickedButtonHandle1Apply();
     afx_msg void OnClickedButtonHandle2Apply();
+    afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };
