@@ -88,6 +88,15 @@ LIBSIMPLEPLAYER_API int LSP_set_filepath(uint32_t handle, char* filepath)
         global_instance_context_array[handle]->p_libvlc_media_player_t);
     global_instance_context_array[handle]->height = libvlc_video_get_height(
         global_instance_context_array[handle]->p_libvlc_media_player_t);
+    // don't handle mouse input for upper layer app
+    // https://forum.videolan.org/viewtopic.php?f=32&t=92568&p=307102&hilit=fullscreen#p307102
+    // Re: i can't Catch mouse events vlc 1.1.5 in Qt,please help m
+    // Post by erwan10       04 Aug 2011 22:43
+    // I just committed a patch for the vlc1.1 and vlc1.2 series that does this job of disabling
+    // vlc windows when libvlc developper specifies both mouse and keyboard support to be disabled
+    // via the libvlc api. So no more need for this hack in future versions.
+    libvlc_video_set_mouse_input(global_instance_context_array[handle]->p_libvlc_media_player_t, false);
+    libvlc_video_set_key_input(global_instance_context_array[handle]->p_libvlc_media_player_t, false);
 
     return LIB_SIMPLE_PLAYER_OK;
 }
