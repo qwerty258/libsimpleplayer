@@ -23,9 +23,13 @@
     <ClInclude Include="..\..\..\include\libSimplePlayer.h" />
     <ClInclude Include="..\..\..\include\libSimplePlayerExport.h" />
     <ClInclude Include="..\..\..\src\checkMacros.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\libSimplePlayer.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="libSimplePlayer.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E8853605-F92B-4A72-A769-9E012F9A2EDF}</ProjectGuid>
