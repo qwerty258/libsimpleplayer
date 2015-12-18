@@ -62,8 +62,8 @@ BEGIN_MESSAGE_MAP(CtestPlayerDlg, CDialogEx)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE2_TAKE_SNAPSHOT, &CtestPlayerDlg::OnClickedButtonHandle2TakeSnapshot)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE1_APPLY, &CtestPlayerDlg::OnClickedButtonHandle1Apply)
     ON_BN_CLICKED(IDC_BUTTON_HANDLE2_APPLY, &CtestPlayerDlg::OnClickedButtonHandle2Apply)
-ON_WM_RBUTTONDOWN()
-ON_WM_LBUTTONDOWN()
+    ON_WM_RBUTTONDOWN()
+    ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -242,6 +242,11 @@ void CtestPlayerDlg::OnClickedButtonHandle2TakeSnapshot()
     LSP_get_snapshot(m_play_handle2, CCStringToChar(m_handle2_snapshot_path).GetCStyleString());
 }
 
+void play_handle1_play_end_event(void* user_data)
+{
+    MessageBox(NULL, _T("Play handle1 play end"), _T("Notify"), MB_OK);
+}
+
 
 void CtestPlayerDlg::OnClickedButtonHandle1Apply()
 {
@@ -250,8 +255,13 @@ void CtestPlayerDlg::OnClickedButtonHandle1Apply()
     LSP_get_idle_handle(&m_play_handle1);
     LSP_set_filepath(m_play_handle1, CCStringToChar(m_handle1_filepath).GetCStyleString());
     LSP_set_hwnd(m_play_handle1, GetDlgItem(IDC_HANDLE1_PICTURE_AREA)->m_hWnd);
+    LSP_set_play_end_event_callback(m_play_handle1, play_handle1_play_end_event, NULL);
 }
 
+void play_handle2_play_end_event(void* user_data)
+{
+    MessageBox(NULL, _T("Play handle2 play end"), _T("Notify"), MB_OK);
+}
 
 void CtestPlayerDlg::OnClickedButtonHandle2Apply()
 {
@@ -260,6 +270,7 @@ void CtestPlayerDlg::OnClickedButtonHandle2Apply()
     LSP_get_idle_handle(&m_play_handle2);
     LSP_set_filepath(m_play_handle2, CCStringToChar(m_handle2_filepath).GetCStyleString());
     LSP_set_hwnd(m_play_handle2, GetDlgItem(IDC_HANDLE2_PICTURE_AREA)->m_hWnd);
+    LSP_set_play_end_event_callback(m_play_handle2, play_handle2_play_end_event, NULL);
 }
 
 
