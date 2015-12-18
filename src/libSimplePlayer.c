@@ -3,6 +3,7 @@
 #include <vlc\libvlc.h>
 #include <vlc\libvlc_media.h>
 #include <vlc\libvlc_media_player.h>
+#include <vlc\libvlc_events.h>
 #include <stdlib.h>
 #include <Windows.h>
 
@@ -20,8 +21,11 @@ typedef struct _instance_context
     libvlc_instance_t* p_libvlc_instance_t;
     libvlc_media_t* p_libvlc_media_t;
     libvlc_media_player_t* p_libvlc_media_player_t;
+    libvlc_event_manager_t* p_libvlc_event_manager_t;
     int width;
     int height;
+    function_play_end_event p_function_play_end_event;
+    void* user_data;
 }instance_context;
 
 instance_context** global_instance_context_array;
@@ -110,6 +114,34 @@ LIBSIMPLEPLAYER_API int LSP_set_hwnd(uint32_t handle, void* hWnd)
     libvlc_media_player_set_hwnd(
         global_instance_context_array[handle]->p_libvlc_media_player_t,
         hWnd);
+
+    return LIB_SIMPLE_PLAYER_OK;
+}
+
+void libvlc_playend_callback(const struct libvlc_event_t* p_libvlc_event_t, void* user_data)
+{
+    instance_context* p_instance_context = user_data;
+    p_instance_context->p_function_play_end_event(
+        p_instance_context->user_data);
+}
+
+LIBSIMPLEPLAYER_API int LSP_set_play_end_event_callback(uint32_t handle, function_play_end_event p_function_play_end_event, void* user_data)
+{
+    CHECK_PARAMETER(p_function_play_end_event);
+    CHECK_HANDLE(handle);
+    CHECK_PLAYING_NO_SET(global_instance_context_array[handle]->state);
+
+    global_instance_context_array[handle]->user_data = user_data;
+    global_instance_context_array[handle]->p_function_play_end_event = p_function_play_end_event;
+
+    global_instance_context_array[handle]->p_libvlc_event_manager_t = libvlc_media_player_event_manager(
+        global_instance_context_array[handle]->p_libvlc_media_player_t);
+
+    libvlc_event_attach(
+        global_instance_context_array[handle]->p_libvlc_event_manager_t,
+        libvlc_MediaPlayerEndReached,
+        libvlc_playend_callback,
+        global_instance_context_array[handle]);
 
     return LIB_SIMPLE_PLAYER_OK;
 }
