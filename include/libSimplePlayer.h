@@ -15,6 +15,12 @@ LIBSIMPLEPLAYER_API int LSP_initial(void);
 
 LIBSIMPLEPLAYER_API int LSP_get_idle_handle(uint32_t* handle);
 
+LIBSIMPLEPLAYER_API int LSP_set_RTSP_username(uint32_t handle, char* username);
+
+LIBSIMPLEPLAYER_API int LSP_set_RTSP_password(uint32_t handle, char* password);
+
+LIBSIMPLEPLAYER_API int LSP_set_MUL(uint32_t handle, char* MUL);
+
 LIBSIMPLEPLAYER_API int LSP_set_filepath(uint32_t handle, char* filepath);
 
 LIBSIMPLEPLAYER_API int LSP_set_hwnd(uint32_t handle, void* hWnd);

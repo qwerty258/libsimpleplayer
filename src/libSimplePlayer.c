@@ -24,6 +24,9 @@ typedef struct _instance_context
     libvlc_event_manager_t* p_libvlc_event_manager_t;
     int width;
     int height;
+    char* RTSP_username;
+    char* RTSP_password;
+    char* URI_RTSP;
     function_play_end_event p_function_play_end_event;
     void* user_data;
 }instance_context;
@@ -72,6 +75,116 @@ LIBSIMPLEPLAYER_API int LSP_get_idle_handle(uint32_t* handle)
         CHECK_MEMORY_ALLOC_RESULT(global_instance_context_array[i]);
         *handle = i;
     }
+
+    return LIB_SIMPLE_PLAYER_OK;
+}
+
+LIBSIMPLEPLAYER_API int LSP_set_RTSP_username(uint32_t handle, char* username)
+{
+    CHECK_PARAMETER(username);
+    CHECK_HANDLE(handle);
+    CHECK_PLAYING_NO_SET(global_instance_context_array[handle]->state);
+
+    if(NULL != global_instance_context_array[handle]->RTSP_username)
+    {
+        free(global_instance_context_array[handle]->RTSP_username);
+    }
+    global_instance_context_array[handle]->RTSP_username = strdup(username);
+
+    if(NULL == global_instance_context_array[handle]->RTSP_username)
+    {
+        return LIB_SIMPLE_PLAYER_NO_MEMORY;
+    }
+    else
+    {
+        return LIB_SIMPLE_PLAYER_OK;
+    }
+}
+
+LIBSIMPLEPLAYER_API int LSP_set_RTSP_password(uint32_t handle, char* password)
+{
+    CHECK_PARAMETER(password);
+    CHECK_HANDLE(handle);
+    CHECK_PLAYING_NO_SET(global_instance_context_array[handle]->state);
+
+    if(NULL != global_instance_context_array[handle]->RTSP_password)
+    {
+        free(global_instance_context_array[handle]->RTSP_password);
+    }
+    global_instance_context_array[handle]->RTSP_password = strdup(password);
+
+    if(NULL == global_instance_context_array[handle]->RTSP_password)
+    {
+        return LIB_SIMPLE_PLAYER_NO_MEMORY;
+    }
+    else
+    {
+        return LIB_SIMPLE_PLAYER_OK;
+    }
+}
+
+char* networking_cache = ":network-caching=500";
+char* verbose = ":verbose=2";
+char* RTSP_RTP_through_TCP = "--rtsp-tcp";
+
+LIBSIMPLEPLAYER_API int LSP_set_MUL(uint32_t handle, char* MUL)
+{
+    CHECK_PARAMETER(MUL);
+    CHECK_HANDLE(handle);
+    CHECK_PLAYING_NO_SET(global_instance_context_array[handle]->state);
+
+    if(NULL != global_instance_context_array[handle]->URI_RTSP)
+    {
+        free(global_instance_context_array[handle]->URI_RTSP);
+    }
+    global_instance_context_array[handle]->URI_RTSP = strdup(MUL);
+
+    char* URI_RTSP_with_authorization = calloc(1, strlen(MUL) + 1024);
+    CHECK_MEMORY_ALLOC_RESULT(URI_RTSP_with_authorization);
+
+    char* libvlc_arguments[2];
+    libvlc_arguments[0] = networking_cache;
+    libvlc_arguments[1] = verbose;
+    //libvlc_arguments[1] = RTSP_RTP_through_TCP;
+
+    global_instance_context_array[handle]->p_libvlc_instance_t = libvlc_new(0, NULL);
+
+    libvlc_set_user_agent(
+        global_instance_context_array[handle]->p_libvlc_instance_t,
+        "vlc RTSP client",
+        "www.videolan.org");
+
+    if(NULL != global_instance_context_array[handle]->RTSP_username &&
+       NULL != global_instance_context_array[handle]->RTSP_password)
+    {
+        sprintf(
+            URI_RTSP_with_authorization,
+            "%s%s:%s@%s",
+            "rtsp://",
+            global_instance_context_array[handle]->RTSP_username,
+            global_instance_context_array[handle]->RTSP_password,
+            MUL + strlen("rtsp://"));
+        global_instance_context_array[handle]->p_libvlc_media_t = libvlc_media_new_location(
+            global_instance_context_array[handle]->p_libvlc_instance_t,
+            URI_RTSP_with_authorization);
+    }
+    else
+    {
+        global_instance_context_array[handle]->p_libvlc_media_t = libvlc_media_new_location(
+            global_instance_context_array[handle]->p_libvlc_instance_t,
+            MUL);
+    }
+
+    global_instance_context_array[handle]->p_libvlc_media_player_t = libvlc_media_player_new_from_media(
+        global_instance_context_array[handle]->p_libvlc_media_t);
+    global_instance_context_array[handle]->width = libvlc_video_get_width(
+        global_instance_context_array[handle]->p_libvlc_media_player_t);
+    global_instance_context_array[handle]->height = libvlc_video_get_height(
+        global_instance_context_array[handle]->p_libvlc_media_player_t);
+    libvlc_video_set_mouse_input(global_instance_context_array[handle]->p_libvlc_media_player_t, false);
+    libvlc_video_set_key_input(global_instance_context_array[handle]->p_libvlc_media_player_t, false);
+
+    free(URI_RTSP_with_authorization);
 
     return LIB_SIMPLE_PLAYER_OK;
 }
@@ -235,6 +348,10 @@ LIBSIMPLEPLAYER_API int LSP_close_handle(uint32_t handle)
     libvlc_media_player_release(global_instance_context_array[handle]->p_libvlc_media_player_t);
     libvlc_media_release(global_instance_context_array[handle]->p_libvlc_media_t);
     libvlc_release(global_instance_context_array[handle]->p_libvlc_instance_t);
+
+    free(global_instance_context_array[handle]->RTSP_username);
+    free(global_instance_context_array[handle]->RTSP_password);
+    free(global_instance_context_array[handle]->URI_RTSP);
 
     free(global_instance_context_array[handle]);
     global_instance_context_array[handle] = NULL;
