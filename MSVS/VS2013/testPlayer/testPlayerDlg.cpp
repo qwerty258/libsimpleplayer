@@ -81,7 +81,7 @@ BOOL CtestPlayerDlg::OnInitDialog()
     // TODO: Add extra initialization here
     m_handle1_speed = 1.0;
     m_handle2_speed = 1.0;
-    m_handle1_filepath = _T("E:\\C#FundamentalsForAbsoluteBeginnersM01_high.mp4");
+    m_handle1_filepath = _T("rtsp://192.168.10.29/gsd15070731am.mkv");
     m_handle2_filepath = _T("E:\\Avengers.Age.of.Ultron.2015.1080p.BluRay.x264.YIFY.mp4");
     m_handle1_snapshot_path = _T("D:\\");
     m_handle2_snapshot_path = _T("D:\\");
@@ -253,7 +253,7 @@ void CtestPlayerDlg::OnClickedButtonHandle1Apply()
     // TODO: Add your control notification handler code here
     UpdateData();
     LSP_get_idle_handle(&m_play_handle1);
-    LSP_set_filepath(m_play_handle1, CCStringToChar(m_handle1_filepath).GetCStyleString());
+    LSP_set_MUL(m_play_handle1, CCStringToChar(m_handle1_filepath).GetCStyleString());
     LSP_set_hwnd(m_play_handle1, GetDlgItem(IDC_HANDLE1_PICTURE_AREA)->m_hWnd);
     LSP_set_play_end_event_callback(m_play_handle1, play_handle1_play_end_event, NULL);
 }
